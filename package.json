@@ -1,0 +1,20 @@
+{
+  "name": "lang-model",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://LukeEllul@bitbucket.org/LukeEllul/lang-model.git"
+  },
+  "author": "Luke Ellul <ellul.luke@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/LukeEllul/lang-model#readme",
+  "dependencies": {
+    "immutable": "^3.8.2",
+    "ramda": "^0.25.0"
+  }
+}

@@ -39,3 +39,26 @@ const processOrganizedInfo = v => {
             })
     });
 }
+
+const nGram = (n, V) => countFn => countFn === 'getN' ? n : (...tokens) =>
+    iterateTokens(n)(...tokens)(
+        countFn, 
+        R.pipe(
+            organize,
+            processOrganizedInfo
+        ), 
+        V
+    );
+
+const unigram = nGram(1);
+const bigram = nGram(2);
+const trigram = nGram(3);
+
+const laplace = V => ngram => nGram(ngram('getN'), V);
+
+module.exports = {
+    unigram,
+    bigram,
+    trigram,
+    laplace
+};

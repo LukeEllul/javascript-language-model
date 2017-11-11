@@ -5,12 +5,6 @@ const fs = require('fs');
 
 const { text } = require('./text');
 
-const generateCount = text => {
-    const textNum = text.split(' ').length;
-    return (...tokens) =>
-        (text.match(new RegExp(tokens.join(' '), 'gi')) || []).length / textNum;
-};
-
 const organize = (v, t, historyTokens, PoV) => [
     t.toLowerCase(),
     List([v, historyTokens.map(v => v.toLowerCase())]),

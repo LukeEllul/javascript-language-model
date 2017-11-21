@@ -1,7 +1,7 @@
 const R = require('ramda');
-const {bigram, trigram, laplace} = require('./processing');
+const { bigram, trigram, laplace } = require('./processing');
 const { text } = require('./text');
-const {iterateThroughFiles} = require('./fileOps');
+const { iterateThroughFiles } = require('./fileOps');
 
 const matchWords = text => text.match(/\w+/gi);
 
@@ -18,28 +18,46 @@ const getSentences = text =>
 
 const getWordCountOfTexts = textLocations => {
     let count = 0;
-    return iterateThroughFiles(textLocations)(
+    iterateThroughFiles(textLocations)(
         text => count = count + getWordCount(text.toString())
     );
+    return count;
 }
 
-const generateCountFn = text => {
-    //todo: rearrange generateCountFn to handle extra large files of
-    //sentences!!
-    const sentences = getSentences(text);
-    const textWordCount = getWordCount(text);
-    return (...tokens) =>
-        sentences.reduce((currentTokenCount, sentence) =>
-            currentTokenCount + getTokenCount(sentence.match(
-                new RegExp(
-                    removePunctuation(joinTokens(...tokens)),
-                    'gi'
-                )
-            )), 0) / textWordCount;
+// const generateCountFn = text => {
+//     //todo: rearrange generateCountFn to handle extra large files of
+//     //sentences!!
+//     const sentences = getSentences(text);
+//     const textWordCount = getWordCount(text);
+//     return (...tokens) =>
+//         sentences.reduce((currentTokenCount, sentence) =>
+//             currentTokenCount + getTokenCount(sentence.match(
+//                 new RegExp(
+//                     removePunctuation(joinTokens(...tokens)),
+//                     'gi'
+//                 )
+//             )), 0) / textWordCount;
+// }
+
+const generateCountFn = textLocations => {
+    const textWordCount = getWordCountOfTexts(textLocations);
+    return (...tokens) => {
+        let tokenCount = 0;
+        iterateThroughFiles(textLocations)(
+            text => tokenCount = getSentences(text.toString()).reduce((currentTokenCount, sentence) =>
+                    currentTokenCount + getTokenCount(sentence.match(
+                        new RegExp(
+                            removePunctuation(joinTokens(...tokens)),
+                            'gi'
+                        )
+                    )), tokenCount)
+        );
+        return tokenCount / textWordCount;
+    }
 }
 
 const v = laplace(96)(bigram)(
-    generateCountFn(text)
+    generateCountFn(['./text.js'])
 )(...matchWords(text));
 
 console.log(v);

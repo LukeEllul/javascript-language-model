@@ -1,0 +1,3 @@
+[submodule "corpus-cleaner"]
+	path = corpus-cleaner
+	url = https://LukeEllul@bitbucket.org/teamluke/corpus-cleaner.git

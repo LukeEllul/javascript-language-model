@@ -1,6 +1,6 @@
 const R = require('ramda');
 const { bigram, trigram, laplace } = require('./processing');
-// const { text } = require('./text');
+//const { text } = require('./text');
 const { iterateThroughFiles } = require('./fileOps');
 const memoize = require('memoize-immutable');
 const fs = require('fs');

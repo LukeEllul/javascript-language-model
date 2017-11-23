@@ -1,7 +1,6 @@
 const R = require('ramda');
 const { Map, List } = require('immutable');
 const { iterateTokens } = require('./probFunctions');
-const fs = require('fs');
 
 const { text } = require('./text');
 

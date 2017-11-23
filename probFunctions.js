@@ -11,12 +11,13 @@ const iterateTokens = n => (...tokens) => (P, fn, V) =>
         (t, i) => {
             const slicedTokens = n !== 1 && tokens.slice(
                 (j => j < 0 || n === 0 ? 0 : j)(i - (n - 1)), i);
+            const Pt = P(t);
             return (fn || (v => v))
                 (
-                    n === 1 || i === 0 ? P(t) : cond(t, ...slicedTokens)(P, V),
+                    n === 1 || i === 0 ? Pt : cond(t, ...slicedTokens)(P, V),
                     t,
                     slicedTokens,
-                    P(t)
+                    Pt
                 )
         });
 

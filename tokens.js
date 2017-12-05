@@ -1,9 +1,5 @@
-const R = require('ramda');
-const { bigram, trigram, laplace } = require('./processing');
-//const { text } = require('./text');
 const { iterateThroughFiles } = require('./fileOps');
 const memoize = require('memoize-immutable');
-const fs = require('fs');
 
 const matchWords = memoize(text => text.match(/\w+/gi));
 
@@ -44,5 +40,6 @@ const generateCountFn = textLocations => {
 }
 
 module.exports = {
-    generateCountFn
+    generateCountFn,
+    matchWords
 };

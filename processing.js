@@ -2,8 +2,6 @@ const R = require('ramda');
 const { Map, List } = require('immutable');
 const { iterateTokens } = require('./probFunctions');
 
-const { text } = require('./text');
-
 const organize = (v, t, historyTokens, PoV) => [
     t.toLowerCase(),
     List([v, historyTokens.map(v => v.toLowerCase())]),

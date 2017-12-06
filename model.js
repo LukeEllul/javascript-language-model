@@ -75,7 +75,7 @@ const operateModel = fn => nGram => sentence => {
                         res(fn(data.tri[lastWords[1]] || (lastWords[0] === 'undefined' && data.tri['undefined'])))
                 })
             )
-    })
+    });
 }
 
 const GenerateText = operateModel(nextWord);

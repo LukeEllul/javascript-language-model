@@ -31,7 +31,7 @@ const processOrganizedInfo = v => {
     });
 }
 
-const nGram = (n, V) => countFn => countFn === 'getN' ? n : (...tokens) =>
+const nGram = (n, V) => countFn => countFn === 'getN' ? n : countFn === 'isLaplace' ? V : (...tokens) =>
     iterateTokens(n)(...tokens)(
         countFn, 
         R.pipe(

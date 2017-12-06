@@ -58,8 +58,8 @@ const operateModel = fn => nGram => sentence => {
                 )
         });
     }
-    const nGramType = nGramNo === 1 ? 'unigram' :
-        nGramNo === 2 ? 'bigram' : 'trigram';
+    const nGramType = (x => nGram('isLaplace') ? x + 'Laplace' : x)(nGramNo === 1 ? 'unigram' :
+        nGramNo === 2 ? 'bigram' : 'trigram');
     const lastWords = matchWords(sentence.toLowerCase()).slice((nGramNo * -1) + 1);
     return new Promise((res, rej) => {
         openStore(location + nGramType)
@@ -75,6 +75,17 @@ const operateModel = fn => nGram => sentence => {
                         res(fn(data.tri[lastWords[1]] || (lastWords[0] === 'undefined' && data.tri['undefined'])))
                 })
             )
+    });
+}
+
+const calcVocab = databaseName => {
+    let i = 0;
+    return new Promise((res, rej) => {
+        openStore(location + databaseName).then(
+            db => db.createReadStream()
+                .on('data', () => i++)
+                .on('end', () => res(i))
+        );
     });
 }
 

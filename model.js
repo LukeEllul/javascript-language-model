@@ -66,13 +66,15 @@ const operateModel = fn => nGram => sentence => {
             .then(db =>
                 db.get(lastWords[0], (err, data) => {
                     if (err && err.notFound) {
-                        console.log('word cannot be found in corpus so starting from undefined');
-                        db.get('undefined', (err, data) => res(fn(data.tri['undefined'])));
+                        // console.log('word cannot be found in corpus so starting from undefined');
+                        // db.get('undefined', (err, data) => res(fn(data.tri['undefined'])));
+                        //console.log('word cannot be found in corpus');
+                        rej('word not found');
                     }
                     else if (nGramNo === 2)
                         res(fn(data.bi || (lastWords[0] === 'undefined' && data.tri['undefined'])));
                     else if (nGramNo === 3)
-                        res(fn(data.tri[lastWords[1]] || (lastWords[0] === 'undefined' && data.tri['undefined'])))
+                        (x => x ? res(fn(x)) : rej("trigram not found"))(data.tri[lastWords[1]] || (lastWords[0] === 'undefined' && data.tri['undefined']))
                 })
             )
     });
@@ -91,3 +93,16 @@ const calcVocab = databaseName => {
 
 const GenerateText = operateModel(nextWord);
 const WrongWord = operateModel(nextWrongWord);
+
+const backoff = sentence => fn => new Promise((res, rej) => {
+    fn(trigram)(sentence).then(
+        v => res(v),
+        v => v === "trigram not found" && fn(bigram)(sentence).then(
+            v => res(v),
+            v => v === 'word not found' && fn(unigram)(sentence).then(
+                v => res(v),
+                err => console.log('backoff error\n' + err) || rej(err)
+            )
+        )
+    )
+});

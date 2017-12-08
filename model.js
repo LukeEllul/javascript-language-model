@@ -117,5 +117,6 @@ const backoff = sentence => fn => new Promise((res, rej) => {
 module.exports = {
     GenerateText,
     WrongWord,
-    backoff
+    backoff,
+    calcVocab
 };

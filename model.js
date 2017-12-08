@@ -1,4 +1,4 @@
-const { unigram, bigram, trigram } = require('./processing');
+const { unigram, bigram, trigram, laplace } = require('./processing');
 const { generateCountFn, matchWords } = require('./tokens');
 const { storeInDatabase, openStore } = require('./lang-model-storage/store');
 const fs = require('fs');
@@ -106,3 +106,16 @@ const backoff = sentence => fn => new Promise((res, rej) => {
         )
     )
 });
+
+// calcVocab('bigram').then(
+//     n => GenerateText(laplace(n)(bigram))('sybil stallone is').then(
+//         console.log,
+//         console.log
+//     )
+// )
+
+module.exports = {
+    GenerateText,
+    WrongWord,
+    backoff
+};

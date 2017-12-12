@@ -1,6 +1,3 @@
-const R = require('ramda');
-const { Map, List } = require('immutable');
-
 const product = (...N) => N.reduce((num, n) => num * n);
 
 const cond = (A, ...B) => (P, V) => 

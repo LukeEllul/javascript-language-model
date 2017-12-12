@@ -14,7 +14,6 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/LukeEllul/lang-model#readme",
   "dependencies": {
-    "immutable": "^3.8.2",
     "memoize-immutable": "^3.0.0",
     "ramda": "^0.25.0"
   }

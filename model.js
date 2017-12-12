@@ -4,8 +4,6 @@ const { storeInDatabase, openStore } = require('./lang-model-storage/store');
 const fs = require('fs');
 const { fromJS } = require('immutable');
 
-const { text } = require('./texts/text');
-
 // const x = trigram(
 //     generateCountFn(['./texts/text.js'])
 // )(...matchWords(text));
@@ -108,11 +106,19 @@ const backoff = sentence => fn => new Promise((res, rej) => {
 });
 
 // calcVocab('bigram').then(
-//     n => GenerateText(laplace(n)(bigram))('sybil stallone is').then(
+//     n => GenerateText(laplace(n)(bigram))('there are').then(
 //         console.log,
 //         console.log
 //     )
 // )
+
+// openStore(location + 'bigramLaplace')
+// .then(db => db.createReadStream().on('data', (data) => console.log(data.value)).on('end', () => console.log('end')));
+
+// WrongWord(bigram)('since there are a lof of').then(
+//     console.log,
+//     console.log
+// );
 
 module.exports = {
     GenerateText,

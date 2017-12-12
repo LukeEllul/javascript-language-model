@@ -4,6 +4,8 @@ const { storeInDatabase, openStore } = require('./lang-model-storage/store');
 const { calcVocab } = require('./model');
 const { iterateThroughFiles } = require('./fileOps');
 
+//const location = './corpus-cleaner/cleanTexts/A1B.txt';
+
 const buildNGram = nGram => texts =>
     storeInDatabase(
         (
@@ -29,3 +31,6 @@ const buildNGram = nGram => texts =>
 // calcVocab('bigram')
 //     .then(i => buildNGram(laplace(i)(trigram))(['./texts/text.js']))
 //     .then(() => console.log('done'));
+
+// buildNGram(bigram)([location])
+// .then(() => console.log('done'), err => console.log(err));

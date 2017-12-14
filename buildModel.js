@@ -4,8 +4,6 @@ const { storeInDatabase, openStore } = require('./lang-model-storage/store');
 const { calcVocab } = require('./model');
 const { iterateThroughFiles } = require('./fileOps');
 
-//const location = './corpus-cleaner/cleanTexts/A1B.txt';
-
 const buildNGram = nGram => texts =>
     storeInDatabase(
         (
@@ -28,9 +26,39 @@ const buildNGram = nGram => texts =>
             )
         );
 
-// calcVocab('bigram')
-//     .then(i => buildNGram(laplace(i)(trigram))(['./texts/text.js']))
-//     .then(() => console.log('done'));
+// //location of plain text file
+// const location = './corpus-cleaner/cleanTexts/B0B.txt';
 
+// //build bigram
 // buildNGram(bigram)([location])
-// .then(() => console.log('done'), err => console.log(err));
+// .then(
+//     () => console.log('done building bigram ' + location),
+//     err => console.log(err)
+// );
+
+// //build trigram
+// buildNGram(trigram)([location])
+// .then(
+//     () => console.log('done building trigram ' + location),
+//     err => console.log(err)
+// );
+
+// //build bigram with laplace smoothing
+// calcVocab('bigram')
+// .then(
+//     i => buildNGram(laplace(i)(bigram))([location])
+// )
+// .then(
+//     () => console.log('done building laplace bigram' + location),
+//     err => console.log(err)
+// );
+
+// //build trigram with laplace smoothing
+// calcVocab('trigram')
+// .then(
+//     i => buildNGram(laplace(i)(trigram))([location])
+// )
+// .then(
+//     () => console.log('done building laplace trigram' + location),
+//     err => console.log(err)
+// );

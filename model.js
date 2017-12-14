@@ -1,27 +1,9 @@
 const { unigram, bigram, trigram, laplace } = require('./processing');
 const { generateCountFn, matchWords } = require('./tokens');
 const { storeInDatabase, openStore } = require('./lang-model-storage/store');
-const fs = require('fs');
 const { fromJS } = require('immutable');
 
-// const x = trigram(
-//     generateCountFn(['./texts/text.js'])
-// )(...matchWords(text));
-
-// storeInDatabase('trigram')(x)
-// .then(() => console.log('done'), err => console.log(err));
-
-// storeInDatabase('bigram')(fromJS(JSON.parse(fs.readFileSync('./texts/organizedText.json'))))
-// .then(() => console.log('done'), err => console.log(err));
-
 const location = './lang-model-storage/databases/';
-
-// openStore(location + 'trigram')
-//     .then(db =>
-//         db.createReadStream()
-//             .on('data', data => console.log(data.key) || console.log(data.value))
-//             .on('end', () => console.log('ended'))
-//     );
 
 const getExpo = n => {
     const expo = n.toExponential();
@@ -49,8 +31,9 @@ const operateModel = fn => nGram => sentence => {
                 .then(db =>
                     db.createReadStream()
                         .on('data', data =>
+                            !data.key.match(/\d/) &&
                             data.value.P > (rand * Math.pow(10, getExpo(data.value.P))) &&
-                            Math.random() < 0.7 &&
+                            Math.random() < 0.005 &&
                             res(data.key)
                         )
                 )
@@ -64,9 +47,6 @@ const operateModel = fn => nGram => sentence => {
             .then(db =>
                 db.get(lastWords[0], (err, data) => {
                     if (err && err.notFound) {
-                        // console.log('word cannot be found in corpus so starting from undefined');
-                        // db.get('undefined', (err, data) => res(fn(data.tri['undefined'])));
-                        //console.log('word cannot be found in corpus');
                         rej('word not found');
                     }
                     else if (nGramNo === 2)
@@ -105,20 +85,64 @@ const backoff = sentence => fn => new Promise((res, rej) => {
     )
 });
 
-// calcVocab('bigram').then(
-//     n => GenerateText(laplace(n)(bigram))('there are').then(
-//         console.log,
-//         console.log
-//     )
-// )
 
-// openStore(location + 'bigramLaplace')
-// .then(db => db.createReadStream().on('data', (data) => console.log(data.value)).on('end', () => console.log('end')));
+//backoff model
+backoff('we have become')(GenerateText)
+.then(
+    nextWord => console.log(nextWord),
+    err => console.log(err)
+);
 
-// WrongWord(bigram)('since there are a lof of').then(
-//     console.log,
-//     console.log
-// );
+function talk(sentence) {
+    return new Promise(res => {
+        backoff(sentence)(GenerateText)
+            .then(
+            nextWord => console.log(nextWord) ||
+                setTimeout(
+                    () => res(sentence + ' ' + nextWord),
+                    1000
+                )
+            )
+    })
+        .then(res => talk(res));
+}
+
+//using talk
+//talk("we have become");
+
+//unigram
+GenerateText(unigram)('since there are a lot of').then(
+    nextWord => console.log(nextWord),
+    err => console.log(err)
+);
+
+//bigram
+GenerateText(bigram)('since there').then(
+    nextWord => console.log(nextWord),
+    err => console.log(err)
+);
+
+//trigram
+GenerateText(trigram)('since there').then(
+    nextWord => console.log(nextWord),
+    err => console.log(err)
+);
+
+//bigram with laplace smoothing
+calcVocab('bigram').then(
+    n => GenerateText(laplace(n)(bigram))('since there are a lot of').then(
+        nextWord => console.log(nextWord),
+        err => console.log(err)
+    )
+);
+
+//trigram with laplace smoothing
+calcVocab('trigram').then(
+    n => GenerateText(laplace(n)(trigram))('since there are a lot of').then(
+        nextWord => console.log(nextWord),
+        err => console.log(err)
+    )
+);
 
 module.exports = {
     GenerateText,

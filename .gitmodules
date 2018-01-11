@@ -1,6 +1,0 @@
-[submodule "corpus-cleaner"]
-	path = corpus-cleaner
-	url = https://LukeEllul@bitbucket.org/teamluke/corpus-cleaner.git
-[submodule "lang-model-storage"]
-	path = lang-model-storage
-	url = https://LukeEllul@bitbucket.org/teamluke/lang-model-storage.git

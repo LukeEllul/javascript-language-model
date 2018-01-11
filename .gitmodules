@@ -1,0 +1,6 @@
+[submodule "lang-model-storage"]
+	path = lang-model-storage
+	url = https://github.com/LukeEllul/lang-model-storage.git
+[submodule "corpus-cleaner"]
+	path = corpus-cleaner
+	url = https://github.com/LukeEllul/corpus-cleaner.git
